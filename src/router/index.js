@@ -7,8 +7,28 @@ import SignUp from "../views/SignUp.vue"
 import SignIn from "../views/SignIn.vue"
 import FrontendAfterLogin from "../layout/FrontendAfterLogin/FrontendAfterLogin.vue"
 import Cart from "../views/FrontAfterLogin/Cart.vue"
+import Footer from "../components/frontend/Footer.vue"
+import About from "../views/About.vue"
+import Admin from "../views/Admin/admin.vue"
+import Backend from "../layout/Backend.vue"
 Vue.use(VueRouter)
 
+
+function authGuard(to, from, next) {
+  let authen = false;
+
+  if (localStorage.getItem("user")) {
+    authen = true;
+  } else {
+    authen = false;
+  }
+
+  if (authen) {
+    next();
+  } else {
+    next({ name: "Signin" });
+  }
+}
 const routes = [
   {
     path: '/',
@@ -21,6 +41,11 @@ const routes = [
         component: Home,
       },
       {
+        path: "About",
+        name: "About",
+        component: About,
+      },
+      {
         path: "SignUp",
         name: "SignUp",
         component: SignUp,
@@ -29,6 +54,11 @@ const routes = [
         path: "SignIn",
         name: "SignIn",
         component: SignIn,
+      },
+      {
+        path: "Footer",
+        name: "Footer",
+        component: Footer,
       },
 
     ]
@@ -52,18 +82,26 @@ const routes = [
 
     ]
   },
-
-
-
-
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+    path: '/Backend',
+    name: 'Backend',
+    component:Backend,
+    beforeEnter: authGuard,
+    children:[
+      {
+        path: "Admin",
+        name: "Admin",
+        component: Admin,
+      },
+      
+
+    ]
+  },
+
+
+
+
+  
 ]
 
 const router = new VueRouter({

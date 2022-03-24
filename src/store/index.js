@@ -13,13 +13,19 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    itemFromAction(state,item){
-      state.cart.push(item)
+    ProductFromAction(state,product){
+      let found = state.cart.find((item)=>item.id == product.id)
+      if(found){
+        found.qty = found.qty +1;
+        found.total = found.qty*found.price;
+      }else{
+        state.cart.push(product);
+      }
     }
   },
   actions: {
-    itemFromProduct({commit},item){
-      commit("itemFromAction",item)
+    itemFromProduct({commit},product){
+      commit("ProductFromAction",product)
 
     }
   },

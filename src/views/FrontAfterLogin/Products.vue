@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-container>
-     
       <v-row>
         <v-card
           v-for="item in products"
@@ -56,18 +55,28 @@
 </template>
 
 <script>
-import http from "@/Services/Auth";
+import http from "@/Services/FrontendService";
 export default {
   data() {
     return {
       products: {},
-     
     };
   },
   methods: {
-      buyProduct(item){
-          this.$store.dispatch("itemFromProduct",item)
-      }
+    buyProduct(item) {
+      let product = {
+        id: item.id,
+        image: item.image,
+        name: item.name,
+        amount: item.amount,
+        price: item.price,
+        category: item.category,
+        description: item.description,
+        total: item.price,
+        qty: 1,
+      };
+      this.$store.dispatch("itemFromProduct", product);
+    },
   },
   mounted() {
     http
